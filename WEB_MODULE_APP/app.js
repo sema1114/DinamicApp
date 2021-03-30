@@ -25,28 +25,27 @@ const StorageController = (function () {
             return products;
         },
         updateProduct :function(product){
-        let products = JSON.parse(localStorage.getItem('products'));
-        
-        products.forEach(function(prd,index){
-        if(product.id==prd.id){
-        products.splice(index,1,product); //indexten itibaren 1 eleman sil ve sondaki product ekle
-
-        }
-        });
-        localStorage.setItem('products',JSON.stringify('products'));
-
-        },
-        deleteProduct :function(id){
-
             let products = JSON.parse(localStorage.getItem('products'));
-        
+
             products.forEach(function(prd,index){
-            if(id==prd.id){
-            products.splice(index,1); //indexten itibaren 1 eleman sil ve sondaki product ekle
-    
+            if(product.id==prd.id){
+                products.splice(index,1,product);
             }
             });
-            localStorage.setItem('products',JSON.stringify('products'));
+
+            localStorage.setItem('products',JSON.stringify(products));
+        },
+        deleteProduct :function(id){
+            let products = JSON.parse(localStorage.getItem('products'));
+
+            products.forEach(function(prd,index){
+            if(id==prd.id){
+                products.splice(index,1);
+            }
+            });
+
+            localStorage.setItem('products',JSON.stringify(products));
+
         }
     }
 
@@ -369,15 +368,13 @@ const App = (function (ProductCtrl, UICtrl, StorageCtrl) {
 
             let item = UICtrl.updateProduct(updatedProduct);
 
-
-
             //get total
             const total = ProductCtrl.getTotal();
             //show total
 
             UICtrl.showTotal(total);
 
-            //update Storage
+            //updateStorage
 
             StorageCtrl.updateProduct(updatedProduct);
 
@@ -413,7 +410,8 @@ const App = (function (ProductCtrl, UICtrl, StorageCtrl) {
 
         UICtrl.showTotal(total);
 
-        //delete From Storage
+
+        //delete from storage
         StorageCtrl.deleteProduct(selectedProduct.id);
 
         UICtrl.addingState();
@@ -434,6 +432,7 @@ const App = (function (ProductCtrl, UICtrl, StorageCtrl) {
                 UIController.hideCard();
             } else {
                 UICtrl.createProductList(products);
+
             }
 
             //load Event Listener
